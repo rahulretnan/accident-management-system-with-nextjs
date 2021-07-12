@@ -39,7 +39,7 @@ const AdminLayout = ({ children }: TProps<any>) => {
               router.push('/admin/teachers');
             }}
           >
-            Teachers
+            Clients
           </Menu.Item>
           <Menu.Item
             key="h1"
