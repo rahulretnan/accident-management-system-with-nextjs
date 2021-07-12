@@ -1,5 +1,5 @@
 import { UploadOutlined } from '@ant-design/icons';
-import { Button, Form, Input, Select, Upload } from 'antd';
+import { Button, Form, Input, InputNumber, Select, Upload } from 'antd';
 import { RcFile } from 'antd/lib/upload';
 import { get, omit } from 'lodash';
 import { useRouter } from 'next/router';
@@ -11,7 +11,7 @@ import { beforeUpload, getBase64 } from '~/helpers/file-uploader';
 import { useAuth } from '~/hooks/useAuth';
 import { TParent } from '~/shared/types';
 
-export const ParentForm = () => {
+export const DriverForm = () => {
   const router = useRouter();
   const [form] = Form.useForm();
   const { setLoading, register } = useAuth();
@@ -144,28 +144,22 @@ export const ParentForm = () => {
           >
             <Input />
           </Form.Item>
-          <Form.Item
-            name="gender"
-            label="Gender"
+          <Form.Item 
+            name="aadhar_id"
+            label="Aadhar ID"
             rules={[
               {
+                type: 'number',
                 required: true,
+                message: 'Enter a valid Aadhar ID'
               },
             ]}
           >
-            <Select defaultValue="select" style={{ width: 120 }}>
-              <Option disabled value="select">
-                Select
-              </Option>
-              <Option value="male">Male</Option>
-              <Option value="female">Female</Option>
-            </Select>
+            <InputNumber className="w-full" />
           </Form.Item>
-        </div>
-        <div className="col-6">
           <Form.Item
-            name="address"
-            label="Address"
+            name="license"
+            label="License No."
             rules={[
               {
                 type: 'string',
@@ -173,27 +167,19 @@ export const ParentForm = () => {
               },
             ]}
           >
-            <Input.TextArea />
+            <Input />
           </Form.Item>
           <Form.Item
-            name="student_id"
-            label="Student"
+            name="vehicle_number"
+            label="Vehicle No."
             rules={[
               {
+                type: 'string',
                 required: true,
               },
             ]}
           >
-            <Select defaultValue="" style={{ width: 120 }}>
-              <Option disabled value="">
-                Select
-              </Option>
-              {students.map(({ user, id }) => (
-                <Option key={`dep${id}`} value={id}>
-                  {get(user, 'name')}
-                </Option>
-              ))}
-            </Select>
+            <Input />
           </Form.Item>
         </div>
       </div>

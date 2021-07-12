@@ -52,7 +52,7 @@ const ParentList = () => {
         className="float-right"
         type="primary"
         onClick={() => {
-          router.push(`/admin/parents/new`);
+          router.push(`/admin/drivers/new`);
         }}
       >
         Add

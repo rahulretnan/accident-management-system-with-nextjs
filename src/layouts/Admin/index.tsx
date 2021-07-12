@@ -36,7 +36,7 @@ const AdminLayout = ({ children }: TProps<any>) => {
             key="u1"
             icon={<TeamOutlined />}
             onClick={() => {
-              router.push('/admin/teachers');
+              router.push('/admin/clients');
             }}
           >
             Clients
@@ -45,58 +45,30 @@ const AdminLayout = ({ children }: TProps<any>) => {
             key="h1"
             icon={<TeamOutlined />}
             onClick={() => {
-              router.push('/admin/students');
+              router.push('/admin/hospitals');
             }}
           >
-            Students
+            Hospitals
           </Menu.Item>
           <Menu.Item
             key="c1"
             icon={<TeamOutlined />}
             onClick={() => {
-              router.push('/admin/parents');
+              router.push('/admin/drivers');
             }}
           >
-            Parents
+            Drivers
           </Menu.Item>
           <Menu.Item
             key="dd1"
             icon={<TeamOutlined />}
             onClick={() => {
-              router.push('/admin/departments');
+              router.push('/admin/accidents');
             }}
           >
-            Departments
+            Accidents
           </Menu.Item>
-          <Menu.Item
-            key="cc1"
-            icon={<TeamOutlined />}
-            onClick={() => {
-              router.push('/admin/courses');
-            }}
-          >
-            Courses
-          </Menu.Item>
-          <Menu.Item
-            key="ss1"
-            icon={<TeamOutlined />}
-            onClick={() => {
-              router.push('/admin/semesters');
-            }}
-          >
-            Semester
-          </Menu.Item>
-
-          <Menu.Item
-            key="csss1"
-            icon={<TeamOutlined />}
-            onClick={() => {
-              router.push('/admin/subjects');
-            }}
-          >
-            Subjects
-          </Menu.Item>
-
+          
           <Menu.Item
             key="signout"
             icon={<LogoutOutlined />}

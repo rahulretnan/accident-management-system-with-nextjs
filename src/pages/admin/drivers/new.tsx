@@ -1,10 +1,10 @@
 import React from 'react';
-import { ParentForm } from '~/components';
+import { DriverForm } from '~/components';
 
 const AddParent = () => {
   return (
     <div>
-      <ParentForm />
+      <DriverForm />
     </div>
   );
 };

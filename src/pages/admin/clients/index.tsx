@@ -3,21 +3,21 @@ import { get } from 'lodash';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import { useQuery } from 'urql';
-import { GetStudents } from '~/gql/admin/queries';
+import { GetTeachers } from '~/gql/admin/queries';
 
-const StudentList = () => {
+const TeacherList = () => {
   const router = useRouter();
   const [page, setPage] = useState(1);
-  const [students, setStudents] = useState([]);
+  const [teachers, setTeachers] = useState([]);
 
   const [{ data }] = useQuery({
-    query: GetStudents,
+    query: GetTeachers,
     requestPolicy: 'network-only',
   });
 
   useEffect(() => {
     if (data) {
-      setStudents(get(data, 'students'));
+      setTeachers(get(data, 'teachers'));
     }
   }, [data]);
 
@@ -52,7 +52,7 @@ const StudentList = () => {
         className="float-right"
         type="primary"
         onClick={() => {
-          router.push(`/admin/students/new`);
+          router.push(`/admin/clients/new`);
         }}
       >
         Add
@@ -60,7 +60,7 @@ const StudentList = () => {
       <Table
         bordered
         rowKey={(record) => record?.id}
-        dataSource={students}
+        dataSource={teachers}
         columns={columns}
         pagination={{
           onChange(current) {
@@ -70,7 +70,7 @@ const StudentList = () => {
         // onRow={(record) => {
         //   return {
         //     onClick: () => {
-        //       router.push(`/admin/students/${record?.id}/edit`);
+        //       router.push(`/admin/teachers/${record?.id}/edit`);
         //     },
         //   };
         // }}
@@ -79,4 +79,4 @@ const StudentList = () => {
   );
 };
 
-export default StudentList;
+export default TeacherList;

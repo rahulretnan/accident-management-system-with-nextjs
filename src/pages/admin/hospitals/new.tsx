@@ -1,10 +1,10 @@
 import React from 'react';
-import { StudentForm } from '~/components';
+import { HospitalForm } from '~/components';
 
 const AddStudent = () => {
   return (
     <div>
-      <StudentForm />
+      <HospitalForm />
     </div>
   );
 };

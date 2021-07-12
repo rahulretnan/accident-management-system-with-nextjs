@@ -19,7 +19,7 @@ import { beforeUpload, getBase64 } from '~/helpers/file-uploader';
 import { useAuth } from '~/hooks/useAuth';
 import { TStudent } from '~/shared/types';
 
-export const StudentForm = () => {
+export const HospitalForm = () => {
   const router = useRouter();
   const [form] = Form.useForm();
   const { setLoading, register } = useAuth();
@@ -153,163 +153,42 @@ export const StudentForm = () => {
             <Input />
           </Form.Item>
           <Form.Item
-            name="age"
-            label="Age"
-            rules={[
-              {
-                type: 'number',
-                required: true,
-              },
-            ]}
-          >
-            <InputNumber />
-          </Form.Item>
-          <Form.Item
-            name="dob"
-            label="Date of birth"
-            rules={[
-              {
-                type: 'date',
-                required: true,
-              },
-            ]}
-          >
-            <DatePicker />
-          </Form.Item>
-          <Form.Item
-            name="gender"
-            label="Gender"
+            name="website"
+            label="Website"
             rules={[
               {
                 required: true,
-              },
-            ]}
-          >
-            <Select defaultValue="select" style={{ width: 120 }}>
-              <Option disabled value="select">
-                Select
-              </Option>
-              <Option value="male">Male</Option>
-              <Option value="female">Female</Option>
-            </Select>
-          </Form.Item>
-        </div>
-        <div className="col-6">
-          <Form.Item
-            name="category"
-            label="Category"
-            rules={[
-              {
-                type: 'string',
-                required: true,
+                message: 'Please input your Website!',
               },
             ]}
           >
             <Input />
           </Form.Item>
           <Form.Item
-            name="religion"
-            label="Religion"
+            name="location"
+            label="Location"
             rules={[
               {
-                type: 'string',
                 required: true,
+                message: 'Please input your Location!',
+                whitespace: true,
               },
             ]}
           >
             <Input />
           </Form.Item>
           <Form.Item
-            name="father_name"
-            label="Father's Name"
+            name="locality"
+            label="Locality"
             rules={[
               {
-                type: 'string',
                 required: true,
+                message: 'Please input your Location!',
+                whitespace: true,
               },
             ]}
           >
             <Input />
-          </Form.Item>
-          <Form.Item
-            name="mother_name"
-            label="Mother's Name"
-            rules={[
-              {
-                type: 'string',
-                required: true,
-              },
-            ]}
-          >
-            <Input />
-          </Form.Item>
-          <Form.Item
-            name="guardian"
-            label="Guardian"
-            rules={[
-              {
-                type: 'string',
-                required: true,
-              },
-            ]}
-          >
-            <Input />
-          </Form.Item>
-          <Form.Item
-            name="nationality"
-            label="Nationality"
-            rules={[
-              {
-                type: 'string',
-                required: true,
-              },
-            ]}
-          >
-            <Input />
-          </Form.Item>
-          <Form.Item
-            name="qualification"
-            label="Highest qualification"
-            rules={[
-              {
-                type: 'string',
-                required: true,
-              },
-            ]}
-          >
-            <Input />
-          </Form.Item>
-          <Form.Item
-            name="address"
-            label="Address"
-            rules={[
-              {
-                type: 'string',
-                required: true,
-              },
-            ]}
-          >
-            <Input.TextArea />
-          </Form.Item>
-          <Form.Item
-            name="department_id"
-            label="Department"
-            rules={[
-              {
-                required: true,
-              },
-            ]}
-          >
-            <Select defaultValue="" style={{ width: 120 }}>
-              <Option disabled value="">
-                Select
-              </Option>
-              {departments.map(({ department, id }) => (
-                <Option key={`dep${id}`} value={id}>
-                  {department}
-                </Option>
-              ))}
-            </Select>
           </Form.Item>
         </div>
       </div>

@@ -1,10 +1,10 @@
 import React from 'react';
-import { TeacherForm } from '~/components';
+import { ClientForm } from '~/components';
 
 const AddTeacher = () => {
   return (
     <div>
-      <TeacherForm />
+      <ClientForm />
     </div>
   );
 };
