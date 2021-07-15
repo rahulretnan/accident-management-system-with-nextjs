@@ -3,21 +3,21 @@ import { get } from 'lodash';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import { useQuery } from 'urql';
-import { GetParents } from '~/gql/admin/queries';
+import { GetDrivers } from '~/gql/admin/queries';
 
-const ParentList = () => {
+const DriverList = () => {
   const router = useRouter();
   const [page, setPage] = useState(1);
-  const [parents, setParents] = useState([]);
+  const [drivers, setDrivers] = useState([]);
 
   const [{ data }] = useQuery({
-    query: GetParents,
+    query: GetDrivers,
     requestPolicy: 'network-only',
   });
 
   useEffect(() => {
     if (data) {
-      setParents(get(data, 'parents'));
+      setDrivers(get(data, 'users'));
     }
   }, [data]);
 
@@ -29,19 +29,17 @@ const ParentList = () => {
     },
     {
       title: 'Name',
-      dataIndex: 'user',
-      render: (record) => get(record, 'name'),
+      dataIndex: 'name',
       width: '25%',
     },
     {
       title: 'Email',
-      dataIndex: 'user',
-      render: (record) => get(record, 'email'),
+      dataIndex: 'email',
     },
     {
       title: 'Phone',
-      dataIndex: 'user',
-      render: (record) => get(record, 'user_details.0.phone'),
+      dataIndex: 'drivers',
+      render: (record) => get(record, '0.phone'),
     },
   ];
 
@@ -60,7 +58,7 @@ const ParentList = () => {
       <Table
         bordered
         rowKey={(record) => record?.id}
-        dataSource={parents}
+        dataSource={drivers}
         columns={columns}
         pagination={{
           onChange(current) {
@@ -70,7 +68,7 @@ const ParentList = () => {
         // onRow={(record) => {
         //   return {
         //     onClick: () => {
-        //       router.push(`/admin/parents/${record?.id}/edit`);
+        //       router.push(`/admin/drivers/${record?.id}/edit`);
         //     },
         //   };
         // }}
@@ -79,4 +77,4 @@ const ParentList = () => {
   );
 };
 
-export default ParentList;
+export default DriverList;

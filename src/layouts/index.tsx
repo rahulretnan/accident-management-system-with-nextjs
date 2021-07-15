@@ -3,13 +3,15 @@ import React, { PropsWithChildren } from 'react';
 import { Spinner } from '~/components';
 import { useAuth } from '~/hooks/useAuth';
 import AdminLayout from './Admin';
+import ClientLayout from './Client';
+import DriverLayout from './Driver';
+import HospitalLayout from './Hospital';
 import PublicLayout from './Public';
-import StudentLayout from './Student';
-import TeacherLayout from './Teacher';
 const Layouts: any = {
   admin: AdminLayout,
-  teacher: TeacherLayout,
-  student: StudentLayout,
+  driver: DriverLayout,
+  hospital: HospitalLayout,
+  client: ClientLayout,
   public: PublicLayout,
 };
 
@@ -21,11 +23,15 @@ const AppLayout = ({ children }: PropsWithChildren<any>) => {
     if (role === 'ADMIN' && pathname.includes('admin') && isAuthenticated) {
       return 'admin';
     }
-    if (role === 'TEACHER' && pathname.includes('teacher') && isAuthenticated) {
-      return 'teacher';
+    if (role === 'DRIVER' && pathname.includes('driver') && isAuthenticated) {
+      return 'driver';
     }
-    if (role === 'STUDENT' && pathname.includes('student') && isAuthenticated) {
-      return 'student';
+    if (
+      role === 'HOSPITAL' &&
+      pathname.includes('hospital') &&
+      isAuthenticated
+    ) {
+      return 'hospital';
     }
     return 'public';
   };

@@ -1,61 +1,37 @@
 import { UploadOutlined } from '@ant-design/icons';
-import {
-  Button,
-  DatePicker,
-  Form,
-  Input,
-  InputNumber,
-  Select,
-  Upload,
-} from 'antd';
+import { Button, Form, Input, InputNumber, Upload } from 'antd';
 import { RcFile } from 'antd/lib/upload';
-import { get, omit } from 'lodash';
+import { omit } from 'lodash';
 import { useRouter } from 'next/router';
-import React, { useEffect, useState } from 'react';
-import { useMutation, useQuery } from 'urql';
-import { UpdateTeacherDepartment } from '~/gql/admin/mutations';
-import { GetDepartments } from '~/gql/admin/queries';
+import React, { useState } from 'react';
 import { beforeUpload, getBase64 } from '~/helpers/file-uploader';
 import { useAuth } from '~/hooks/useAuth';
-import { TTeacher } from '~/shared/types';
+import { TClient } from '~/shared/types';
 
 export const ClientForm = () => {
   const router = useRouter();
   const [form] = Form.useForm();
   const { setLoading, register } = useAuth();
-  const { Option } = Select;
   const [file, setFile] = useState<RcFile>();
-  const [departments, setDepartments] = useState([]);
-  const [{ data }] = useQuery({
-    query: GetDepartments,
-    requestPolicy: 'network-only',
-  });
 
-  const [, updateTeacherDepartment] = useMutation(UpdateTeacherDepartment);
-
-  useEffect(() => {
-    if (data) {
-      setDepartments(get(data, 'departments'));
-    }
-  }, [data]);
-  const onFinish = async (values: TTeacher) => {
+  const onFinish = async (values: TClient) => {
     setLoading(true);
-    const newData = omit(values, ['confirm', 'department_id']);
+    const newData = omit(values, ['confirm']);
     const formData = {
       ...newData,
-      role: 'TEACHER',
-      profile_picture: await getBase64(file as RcFile),
+      role: 'USER',
+      profile_picture: (await getBase64(file as RcFile)) || '',
     };
 
-    const { data: user } = await register(formData);
-    if (user)
-      await updateTeacherDepartment({
-        user_id: user?.id,
-        department_id: values?.department_id,
-      });
+    try {
+      await register(formData);
+    } catch (e) {
+      console.log(e);
+    }
+
     form.resetFields();
     setLoading(false);
-    router.push('/admin/teachers');
+    router.push('/admin/clients');
   };
 
   return (
@@ -144,21 +120,21 @@ export const ClientForm = () => {
             label="Phone"
             rules={[
               {
-                type: 'string',
+                type: 'number',
                 required: true,
               },
             ]}
           >
-            <Input />
+            <InputNumber className="w-full" />
           </Form.Item>
-          <Form.Item 
-            name="aadhar_id"
-            label="Aadhar ID"
+          <Form.Item
+            name="aadhaar_id"
+            label="Aadhaar ID"
             rules={[
               {
                 type: 'number',
                 required: true,
-                message: 'Enter a valid Aadhar ID'
+                message: 'Enter a valid Aadhaar ID',
               },
             ]}
           >

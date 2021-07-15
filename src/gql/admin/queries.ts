@@ -2,17 +2,17 @@ import { gql } from 'urql/core';
 
 export const AdminDashboardDetails = gql`
   query adminDashboard {
-    students: students_aggregate {
+    hospitals: hospitals_aggregate {
       aggregate {
         count
       }
     }
-    teachers: teachers_aggregate {
+    drivers: drivers_aggregate {
       aggregate {
         count
       }
     }
-    parents: parents_aggregate {
+    clients: clients_aggregate {
       aggregate {
         count
       }
@@ -20,106 +20,40 @@ export const AdminDashboardDetails = gql`
   }
 `;
 
-export const GetTeachers = gql`
-  query getTeachers {
-    teachers {
+export const GetDrivers = gql`
+  query GetDrivers {
+    users(where: { role: { _eq: DRIVER } }) {
       id
-      user {
-        name
-        email
-        user_details {
-          phone
-        }
+      name
+      email
+      drivers {
+        phone
       }
     }
   }
 `;
 
-export const GetStudents = gql`
-  query getStudents {
-    students {
+export const GetHospitals = gql`
+  query GetHospitals {
+    users(where: { role: { _eq: HOSPITAL } }) {
       id
-      user {
-        name
-        email
-        user_details {
-          phone
-        }
+      name
+      email
+      hospitals {
+        phone
       }
     }
   }
 `;
 
-export const GetDepartments = gql`
-  query getDepartments {
-    departments {
+export const GetClients = gql`
+  query GetClients {
+    users(where: { role: { _eq: USER } }) {
       id
-      department
-    }
-  }
-`;
-
-export const GetCourses = gql`
-  query getCourses {
-    courses {
-      id
-      course
-      department {
-        id
-        department
-      }
-    }
-    departments {
-      id
-      department
-    }
-  }
-`;
-
-export const GetSemesters = gql`
-  query getSemesters {
-    semesters {
-      id
-      semester
-      course {
-        id
-        course
-      }
-    }
-    courses {
-      id
-      course
-    }
-  }
-`;
-
-export const GetSubjects = gql`
-  query getSubjects {
-    subjects {
-      id
-      subject
-      semester {
-        id
-        semester
-      }
-    }
-    semesters {
-      id
-      semester
-    }
-  }
-`;
-
-export const GetParents = gql`
-  query getParents {
-    parents {
-      id
-      user {
-        name
-        email
-        user_details {
-          phone
-        }
+      name
+      email
+      clients {
+        phone
       }
     }
   }

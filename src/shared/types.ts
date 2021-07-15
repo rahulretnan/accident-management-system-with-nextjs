@@ -2,10 +2,10 @@ import { Dispatch, PropsWithChildren } from 'react';
 
 export type TProps<P> = P & PropsWithChildren<any>;
 
-export type TRole = 'ADMIN' | 'TEACHER' | 'STUDENT' | 'PARENT';
+export type TRole = 'ADMIN' | 'DRIVER' | 'HOSPITAL' | 'USER';
 
 export type TUser = {
-  uid: string | undefined;
+  user_id: string | undefined;
   name: string | undefined;
   email: string | undefined;
   token: string | undefined;
@@ -17,23 +17,30 @@ export type TUsers = {
   email: string | undefined;
 };
 
-export type TUserDetails = TUsers & {
+export type TDriverDetails = TUsers & {
   user_id?: string | undefined;
   phone?: string | undefined;
-  dob?: moment.Moment;
-  age?: string | undefined;
-  address?: string | undefined;
-  category?: string | undefined;
-  state?: string | undefined;
-  religion?: string | undefined;
-  gender?: string | undefined;
-  father_name?: string | undefined;
-  mother_name?: string | undefined;
-  guardian?: string | undefined;
-  nationality?: string | undefined;
-  qualification?: string | undefined;
-  designation?: string | undefined;
-  relation?: string | undefined;
+  licence?: string | undefined;
+  vehicle_number?: string | undefined;
+  aadhaar_id?: number | undefined;
+  locality?: string | undefined;
+  location?: string | undefined;
+  profile_picture?: string | ArrayBuffer | undefined;
+};
+export type THospitalDetails = TUsers & {
+  user_id?: string | undefined;
+  phone?: string | undefined;
+  website?: string | undefined;
+  locality?: string | undefined;
+  location?: string | undefined;
+  availability?: boolean | undefined;
+  profile_picture?: string | ArrayBuffer | undefined;
+};
+export type TClientDetails = TUsers & {
+  user_id?: string | undefined;
+  phone?: string | undefined;
+  aadhaar_id?: number | undefined;
+  location?: string | undefined;
   profile_picture?: string | ArrayBuffer | undefined;
 };
 
@@ -45,6 +52,9 @@ export type TAuthActions = {
 export type TAuthInitialValues = TUser & {
   isAuthenticated?: boolean;
   loading?: boolean;
+  current_driver_id?: string;
+  current_hospital_id?: string;
+  current_client_id?: string;
 };
 
 export type TAuthContext = {
@@ -52,22 +62,17 @@ export type TAuthContext = {
   dispatch: Dispatch<TAuthActions>;
 };
 
-export type TTeacher = TUserDetails & {
+export type TDriver = TDriverDetails & {
   id?: string | undefined;
-  department_id?: string | undefined;
-  role: 'TEACHER';
+  role: 'DRIVER';
 };
 
-export type TStudent = TUserDetails & {
+export type THospital = THospitalDetails & {
   id?: string | undefined;
-  department_id?: string | undefined;
-  course_id?: string | undefined;
-  semester_id?: string | undefined;
-  role: 'STUDENT';
+  role: 'HOSPITAL';
 };
 
-export type TParent = TUserDetails & {
+export type TClient = TClientDetails & {
   id?: string | undefined;
-  student_id?: string | undefined;
-  role: 'PARENT';
+  role: 'CLIENT';
 };

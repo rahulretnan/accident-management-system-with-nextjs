@@ -1,7 +1,12 @@
 /* eslint-disable import/no-anonymous-default-export */
 import { get, omit } from 'lodash';
 import type { NextApiRequest, NextApiResponse } from 'next';
-import { CreateUser } from '~/gql/user/mutations';
+import {
+  CreateClient,
+  CreateDriver,
+  CreateHospital,
+  CreateUser,
+} from '~/gql/user/mutations';
 import gqlClient from '~/helpers/graphql-client';
 import { admin } from '~/services/firebase/admin';
 
@@ -15,7 +20,6 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         name: variables?.name,
         email: variables?.email,
         role: variables?.role,
-        data: details,
       });
       const userId = get(data, 'user.id');
 
@@ -31,6 +35,31 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       await admin.auth().setCustomUserClaims(userId, {
         role: variables?.role,
       });
+
+      if (variables?.role === 'DRIVER') {
+        await gqlClient.request(CreateDriver, {
+          objects: {
+            ...details,
+            user_id: userId,
+          },
+        });
+      }
+      if (variables?.role === 'HOSPITAL') {
+        await gqlClient.request(CreateHospital, {
+          objects: {
+            ...details,
+            user_id: userId,
+          },
+        });
+      }
+      if (variables?.role === 'USER') {
+        await gqlClient.request(CreateClient, {
+          objects: {
+            ...details,
+            user_id: userId,
+          },
+        });
+      }
       return res.status(200).json({ id: userId });
     } catch (error) {
       return res.status(409).send({ error });

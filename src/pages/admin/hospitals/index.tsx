@@ -3,21 +3,21 @@ import { get } from 'lodash';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import { useQuery } from 'urql';
-import { GetStudents } from '~/gql/admin/queries';
+import { GetHospitals } from '~/gql/admin/queries';
 
-const StudentList = () => {
+const HospitalList = () => {
   const router = useRouter();
   const [page, setPage] = useState(1);
-  const [students, setStudents] = useState([]);
+  const [hospitals, setHospitals] = useState([]);
 
   const [{ data }] = useQuery({
-    query: GetStudents,
+    query: GetHospitals,
     requestPolicy: 'network-only',
   });
 
   useEffect(() => {
     if (data) {
-      setStudents(get(data, 'students'));
+      setHospitals(get(data, 'users'));
     }
   }, [data]);
 
@@ -29,19 +29,17 @@ const StudentList = () => {
     },
     {
       title: 'Name',
-      dataIndex: 'user',
-      render: (record) => get(record, 'name'),
+      dataIndex: 'name',
       width: '25%',
     },
     {
       title: 'Email',
-      dataIndex: 'user',
-      render: (record) => get(record, 'email'),
+      dataIndex: 'email',
     },
     {
       title: 'Phone',
-      dataIndex: 'user',
-      render: (record) => get(record, 'user_details.0.phone'),
+      dataIndex: 'hospitals',
+      render: (record) => get(record, '0.phone'),
     },
   ];
 
@@ -60,7 +58,7 @@ const StudentList = () => {
       <Table
         bordered
         rowKey={(record) => record?.id}
-        dataSource={students}
+        dataSource={hospitals}
         columns={columns}
         pagination={{
           onChange(current) {
@@ -70,7 +68,7 @@ const StudentList = () => {
         // onRow={(record) => {
         //   return {
         //     onClick: () => {
-        //       router.push(`/admin/students/${record?.id}/edit`);
+        //       router.push(`/admin/hospitals/${record?.id}/edit`);
         //     },
         //   };
         // }}
@@ -79,4 +77,4 @@ const StudentList = () => {
   );
 };
 
-export default StudentList;
+export default HospitalList;

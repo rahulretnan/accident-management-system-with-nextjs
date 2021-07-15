@@ -3,21 +3,21 @@ import { get } from 'lodash';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import { useQuery } from 'urql';
-import { GetTeachers } from '~/gql/admin/queries';
+import { GetClients } from '~/gql/admin/queries';
 
-const TeacherList = () => {
+const ClientList = () => {
   const router = useRouter();
   const [page, setPage] = useState(1);
-  const [teachers, setTeachers] = useState([]);
+  const [clients, setClients] = useState([]);
 
   const [{ data }] = useQuery({
-    query: GetTeachers,
+    query: GetClients,
     requestPolicy: 'network-only',
   });
 
   useEffect(() => {
     if (data) {
-      setTeachers(get(data, 'teachers'));
+      setClients(get(data, 'users'));
     }
   }, [data]);
 
@@ -29,19 +29,17 @@ const TeacherList = () => {
     },
     {
       title: 'Name',
-      dataIndex: 'user',
-      render: (record) => get(record, 'name'),
+      dataIndex: 'name',
       width: '25%',
     },
     {
       title: 'Email',
-      dataIndex: 'user',
-      render: (record) => get(record, 'email'),
+      dataIndex: 'email',
     },
     {
       title: 'Phone',
-      dataIndex: 'user',
-      render: (record) => get(record, 'user_details.0.phone'),
+      dataIndex: 'clients',
+      render: (record) => get(record, '0.phone'),
     },
   ];
 
@@ -60,7 +58,7 @@ const TeacherList = () => {
       <Table
         bordered
         rowKey={(record) => record?.id}
-        dataSource={teachers}
+        dataSource={clients}
         columns={columns}
         pagination={{
           onChange(current) {
@@ -70,7 +68,7 @@ const TeacherList = () => {
         // onRow={(record) => {
         //   return {
         //     onClick: () => {
-        //       router.push(`/admin/teachers/${record?.id}/edit`);
+        //       router.push(`/admin/clients/${record?.id}/edit`);
         //     },
         //   };
         // }}
@@ -79,4 +77,4 @@ const TeacherList = () => {
   );
 };
 
-export default TeacherList;
+export default ClientList;

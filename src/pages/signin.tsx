@@ -12,13 +12,14 @@ const SignIn = () => {
     const res = await login(value.email, value.password);
     if (res) {
       if (res?.role === 'ADMIN') router.push('/admin');
-      if (res?.role === 'STUDENT') router.push('/student');
-      if (res?.role === 'TEACHER') router.push('/teacher');
+      if (res?.role === 'HOSPITAL') router.push('/hospitals');
+      if (res?.role === 'DRIVER') router.push('/drivers');
+      if (res?.role === 'USER') router.push('/clients');
     }
   };
   if (loading) return <div>Loading</div>;
   return (
-    <Card title="e-Learn Login" className="w-96 rounded">
+    <Card title="ACCMA Login" className="w-96 rounded">
       <Form form={form} onFinish={onSubmit} layout="vertical">
         <Item label="Email" name="email" required>
           <Input />

@@ -6,17 +6,12 @@ import nookies from 'nookies';
 import AppContextProvider from '~/contexts';
 import AppLayout from '~/layouts';
 import GraphQlProvider from '~/services/urqlClient';
-import { TAuthInitialValues } from '~/shared/types';
 import '~/styles/global.css';
 
-type TUserProps = AppProps & {
-  userData: TAuthInitialValues;
-};
-
-function MyApp({ Component, pageProps, userData }: TUserProps) {
+function MyApp({ Component, pageProps }: AppProps) {
   return (
     <GraphQlProvider>
-      <AppContextProvider userData={userData}>
+      <AppContextProvider>
         <AppLayout>
           <Component {...pageProps} />
         </AppLayout>

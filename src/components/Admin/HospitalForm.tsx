@@ -1,62 +1,36 @@
 import { UploadOutlined } from '@ant-design/icons';
-import {
-  Button,
-  DatePicker,
-  Form,
-  Input,
-  InputNumber,
-  Select,
-  Upload,
-} from 'antd';
+import { Button, Form, Input, InputNumber, Select, Upload } from 'antd';
 import { RcFile } from 'antd/lib/upload';
-import { get, omit } from 'lodash';
+import { omit } from 'lodash';
 import { useRouter } from 'next/router';
-import React, { useEffect, useState } from 'react';
-import { useMutation, useQuery } from 'urql';
-import { UpdateStudentDepartment } from '~/gql/admin/mutations';
-import { GetDepartments } from '~/gql/admin/queries';
+import React, { useState } from 'react';
 import { beforeUpload, getBase64 } from '~/helpers/file-uploader';
 import { useAuth } from '~/hooks/useAuth';
-import { TStudent } from '~/shared/types';
+import { THospital } from '~/shared/types';
 
 export const HospitalForm = () => {
   const router = useRouter();
   const [form] = Form.useForm();
   const { setLoading, register } = useAuth();
-  const { Option } = Select;
   const [file, setFile] = useState<RcFile>();
-  const [departments, setDepartments] = useState([]);
-  const [{ data }] = useQuery({
-    query: GetDepartments,
-    requestPolicy: 'network-only',
-  });
 
-  const [, updateStudentDepartment] = useMutation(UpdateStudentDepartment);
-
-  useEffect(() => {
-    if (data) {
-      setDepartments(get(data, 'departments'));
-    }
-  }, [data]);
-
-  const onFinish = async (values: TStudent) => {
+  const onFinish = async (values: THospital) => {
     setLoading(true);
-    const newData = omit(values, ['confirm', 'department_id']);
+    const newData = omit(values, ['confirm']);
     const formData = {
       ...newData,
-      role: 'STUDENT',
+      availability: values?.availability as boolean,
+      role: 'HOSPITAL',
       profile_picture: await getBase64(file as RcFile),
     };
-
-    const { data: user } = await register(formData);
-    if (user)
-      await updateStudentDepartment({
-        user_id: user?.id,
-        department_id: values?.department_id,
-      });
+    try {
+      await register(formData);
+    } catch (e) {
+      console.log(e);
+    }
     form.resetFields();
     setLoading(false);
-    router.push('/admin/students');
+    router.push('/admin/hospitals');
   };
 
   return (
@@ -145,12 +119,12 @@ export const HospitalForm = () => {
             label="Phone"
             rules={[
               {
-                type: 'string',
+                type: 'number',
                 required: true,
               },
             ]}
           >
-            <Input />
+            <InputNumber className="w-full" />
           </Form.Item>
           <Form.Item
             name="website"
@@ -171,7 +145,6 @@ export const HospitalForm = () => {
               {
                 required: true,
                 message: 'Please input your Location!',
-                whitespace: true,
               },
             ]}
           >
@@ -184,11 +157,25 @@ export const HospitalForm = () => {
               {
                 required: true,
                 message: 'Please input your Location!',
-                whitespace: true,
               },
             ]}
           >
             <Input />
+          </Form.Item>
+          <Form.Item
+            name="availability"
+            label="Availability"
+            rules={[
+              {
+                required: true,
+                message: 'Please select availability option!',
+              },
+            ]}
+          >
+            <Select defaultValue="true" placeholder="Select">
+              <Select.Option value="true">Available</Select.Option>
+              <Select.Option value="false">UnAvailable</Select.Option>
+            </Select>
           </Form.Item>
         </div>
       </div>

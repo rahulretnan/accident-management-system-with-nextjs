@@ -6,7 +6,7 @@ import { Spinner } from '~/components';
 import { useAuth } from '~/hooks/useAuth';
 import { TProps } from '~/shared/types';
 
-const AdminLayout = ({ children }: TProps<any>) => {
+const HospitalLayout = ({ children }: TProps<any>) => {
   const router = useRouter();
   const { name, logout, loading } = useAuth();
   const { Content, Footer, Sider } = Layout;
@@ -39,12 +39,12 @@ const AdminLayout = ({ children }: TProps<any>) => {
             key="dd1"
             icon={<TeamOutlined />}
             onClick={() => {
-              router.push('/admin/hospitals');
+              router.push('/hospitals/accidents');
             }}
           >
-            Hospitals
+            Accidents List
           </Menu.Item>
-          <Menu.Item
+          {/* <Menu.Item
             key="cc1"
             icon={<TeamOutlined />}
             onClick={() => {
@@ -61,7 +61,7 @@ const AdminLayout = ({ children }: TProps<any>) => {
             }}
           >
             Clients
-          </Menu.Item>
+          </Menu.Item> */}
 
           <Menu.Item
             key="signout"
@@ -90,4 +90,4 @@ const AdminLayout = ({ children }: TProps<any>) => {
   );
 };
 
-export default AdminLayout;
+export default HospitalLayout;

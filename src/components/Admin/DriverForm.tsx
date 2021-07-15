@@ -1,54 +1,36 @@
 import { UploadOutlined } from '@ant-design/icons';
-import { Button, Form, Input, InputNumber, Select, Upload } from 'antd';
+import { Button, Form, Input, InputNumber, Upload } from 'antd';
 import { RcFile } from 'antd/lib/upload';
-import { get, omit } from 'lodash';
+import { omit } from 'lodash';
 import { useRouter } from 'next/router';
-import React, { useEffect, useState } from 'react';
-import { useMutation, useQuery } from 'urql';
-import { UpdateParentStudent } from '~/gql/admin/mutations';
-import { GetStudents } from '~/gql/admin/queries';
+import React, { useState } from 'react';
 import { beforeUpload, getBase64 } from '~/helpers/file-uploader';
 import { useAuth } from '~/hooks/useAuth';
-import { TParent } from '~/shared/types';
+import { TDriver } from '~/shared/types';
 
 export const DriverForm = () => {
   const router = useRouter();
   const [form] = Form.useForm();
   const { setLoading, register } = useAuth();
-  const { Option } = Select;
   const [file, setFile] = useState<RcFile>();
-  const [students, setStudents] = useState([]);
-  const [{ data }] = useQuery({
-    query: GetStudents,
-    requestPolicy: 'network-only',
-  });
 
-  const [, updateParentStudent] = useMutation(UpdateParentStudent);
-
-  useEffect(() => {
-    if (data) {
-      setStudents(get(data, 'students'));
-    }
-  }, [data]);
-
-  const onFinish = async (values: TParent) => {
+  const onFinish = async (values: TDriver) => {
     setLoading(true);
-    const newData = omit(values, ['confirm', 'student_id']);
+    const newData = omit(values, ['confirm']);
     const formData = {
       ...newData,
-      role: 'PARENT',
+      role: 'DRIVER',
       profile_picture: await getBase64(file as RcFile),
     };
+    try {
+      await register(formData);
+    } catch (e) {
+      console.log(e);
+    }
 
-    const { data: user } = await register(formData);
-    if (user)
-      await updateParentStudent({
-        user_id: user?.id,
-        student_id: values?.student_id,
-      });
     form.resetFields();
     setLoading(false);
-    router.push('/admin/parents');
+    router.push('/admin/drivers');
   };
 
   return (
@@ -144,22 +126,22 @@ export const DriverForm = () => {
           >
             <Input />
           </Form.Item>
-          <Form.Item 
-            name="aadhar_id"
-            label="Aadhar ID"
+          <Form.Item
+            name="aadhaar_id"
+            label="Aadhaar ID"
             rules={[
               {
                 type: 'number',
                 required: true,
-                message: 'Enter a valid Aadhar ID'
+                message: 'Enter a valid Aadhaar ID',
               },
             ]}
           >
             <InputNumber className="w-full" />
           </Form.Item>
           <Form.Item
-            name="license"
-            label="License No."
+            name="licence"
+            label="Licence No."
             rules={[
               {
                 type: 'string',
@@ -176,6 +158,30 @@ export const DriverForm = () => {
               {
                 type: 'string',
                 required: true,
+              },
+            ]}
+          >
+            <Input />
+          </Form.Item>
+          <Form.Item
+            name="location"
+            label="Location"
+            rules={[
+              {
+                required: true,
+                message: 'Please input your Location!',
+              },
+            ]}
+          >
+            <Input />
+          </Form.Item>
+          <Form.Item
+            name="locality"
+            label="Locality"
+            rules={[
+              {
+                required: true,
+                message: 'Please input your Location!',
               },
             ]}
           >
