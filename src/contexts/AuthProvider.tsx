@@ -7,7 +7,7 @@ import {
   TAuthContext,
   TAuthInitialValues,
   TProps,
-  TUser,
+  TUser
 } from '~/shared/types';
 
 export const AuthProviderContext = createContext({} as TAuthContext);
@@ -33,6 +33,7 @@ export const AuthProvider = ({ children }: TProps<TUser>) => {
       if (!user) {
         dispatch({ type: 'SET_USER', payload: initialValues });
         nookies.set(undefined, 'token', '', {});
+        nookies.set(undefined, 'isAnonymous', '', {});
         return;
       }
 
@@ -51,6 +52,7 @@ export const AuthProvider = ({ children }: TProps<TUser>) => {
         },
       });
       nookies.set(undefined, 'token', token, {});
+      nookies.set(undefined, 'isAnonymous', '', {});
     });
   }, []);
 

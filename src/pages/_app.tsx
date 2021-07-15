@@ -24,18 +24,23 @@ MyApp.getInitialProps = async (appContext: AppContext) => {
   const { ctx } = appContext;
   const appProps = await App.getInitialProps(appContext);
   if (typeof window === 'undefined') {
-    const { token } = nookies.get(ctx);
+    const { token, isAnonymous } = nookies.get(ctx);
     if (token) {
       try {
-        const result = await axios.post('/api/validate', {
+        await axios.post('/api/validate', {
           token,
         });
-        return { userData: result, ...appProps };
+        return { ...appProps };
       } catch (e) {
         console.log(e);
       }
     } else {
-      if (ctx.res && !ctx.pathname.includes('signin')) {
+      if (
+        ctx.res &&
+        !ctx.pathname.includes('signin') &&
+        !ctx.pathname.includes('signup') &&
+        !isAnonymous
+      ) {
         ctx.res?.writeHead(302, { Location: '/signin' });
         ctx.res.end();
       }

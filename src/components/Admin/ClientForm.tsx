@@ -25,6 +25,7 @@ export const ClientForm = () => {
 
     try {
       await register(formData);
+      if (router?.pathname?.includes('signup')) router.push('/signin');
     } catch (e) {
       console.log(e);
     }

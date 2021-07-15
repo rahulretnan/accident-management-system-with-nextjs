@@ -5,7 +5,7 @@ import { useQuery } from 'urql';
 import { HospitalDashboardDetails } from '~/gql/hospital/queries';
 
 const gridStyle: CSSProperties = {
-  width: '25%',
+  width: '100%',
   textAlign: 'center',
   color: '#fff',
   borderRadius: 10,
