@@ -7,6 +7,14 @@ export const GetAccidentDetails = gql`
       location
       accepted_by
       photo
+      status
+      hospital {
+        id
+        location
+        user {
+          name
+        }
+      }
       client {
         id
         phone

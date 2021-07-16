@@ -1,15 +1,39 @@
 import { LogoutOutlined, TeamOutlined, UserOutlined } from '@ant-design/icons';
 import { Avatar, Layout, Menu } from 'antd';
+import { get } from 'lodash';
 import { useRouter } from 'next/router';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { useQuery } from 'urql';
 import { Spinner } from '~/components';
+import { GetUserProfile } from '~/gql/user/quries';
 import { useAuth } from '~/hooks/useAuth';
 import { TProps } from '~/shared/types';
 
 const HospitalLayout = ({ children }: TProps<any>) => {
   const router = useRouter();
-  const { name, logout, loading } = useAuth();
+  const { name, logout, loading, user_id, dispatch } = useAuth();
   const { Content, Footer, Sider } = Layout;
+  const [profile, setProfile] = useState();
+
+  const [{ data }] = useQuery({
+    query: GetUserProfile,
+    requestPolicy: 'network-only',
+    variables: { user_id: user_id },
+    pause: !user_id,
+  });
+
+  console.log(data);
+
+  useEffect(() => {
+    if (data) {
+      setProfile(get(data, 'users.0.hospitals.0.profile_picture'));
+      dispatch({
+        type: 'SET_USER',
+        payload: { current_hospital_id: get(data, 'users.0.hospitals.0.id') },
+      });
+    }
+  }, [data]);
+
   if (loading) return <Spinner />;
   return (
     <Layout style={{ minHeight: '100vh' }}>
@@ -18,7 +42,10 @@ const HospitalLayout = ({ children }: TProps<any>) => {
           <Avatar
             size={64}
             style={{ lineHeight: '58px' }}
-            icon={<UserOutlined style={{ verticalAlign: 'middle' }} />}
+            icon={
+              !profile && <UserOutlined style={{ verticalAlign: 'middle' }} />
+            }
+            src={profile}
           />
         </div>
         <div className="text-white text-center mb-2">
@@ -29,7 +56,7 @@ const HospitalLayout = ({ children }: TProps<any>) => {
             key="d1"
             icon={<TeamOutlined />}
             onClick={() => {
-              router.push('/admin');
+              router.push('/hospitals');
             }}
           >
             Dashboard

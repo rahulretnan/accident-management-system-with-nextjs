@@ -33,8 +33,6 @@ export const useAuth = () => {
           payload: { ...response, isAuthenticated: true },
         });
         nookies.set(undefined, 'token', response?.token, {});
-        nookies.set(undefined, 'isAnonymous', '', {});
-
         setLoading(false);
         return response;
       }
@@ -51,7 +49,6 @@ export const useAuth = () => {
       payload: { isAuthenticated: false },
     });
     nookies.set(undefined, 'token', '', {});
-    nookies.set(undefined, 'isAnonymous', '', {});
     setLoading(false);
   };
 
@@ -81,6 +78,7 @@ export const useAuth = () => {
     sendForgotPasswordMail,
     logout: getLogout,
     currentAccount,
+    dispatch,
     setLoading,
   };
 };

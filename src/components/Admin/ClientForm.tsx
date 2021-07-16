@@ -8,7 +8,7 @@ import { beforeUpload, getBase64 } from '~/helpers/file-uploader';
 import { useAuth } from '~/hooks/useAuth';
 import { TClient } from '~/shared/types';
 
-export const ClientForm = () => {
+export const ClientForm = ({ isSignUp = false }) => {
   const router = useRouter();
   const [form] = Form.useForm();
   const { setLoading, register } = useAuth();
@@ -25,7 +25,7 @@ export const ClientForm = () => {
 
     try {
       await register(formData);
-      if (router?.pathname?.includes('signup')) router.push('/signin');
+      if (isSignUp) router.push('/signin');
     } catch (e) {
       console.log(e);
     }

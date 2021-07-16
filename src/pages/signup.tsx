@@ -11,7 +11,7 @@ const SignUp = () => {
   if (loading) return <div>Loading</div>;
   return (
     <Card title="ACCMA SignUp" className="w-96 rounded m-4 text-center">
-      <ClientForm />
+      <ClientForm isSignUp />
       <Button onClick={() => router.push('/signin')} type="link">
         Already have account
       </Button>

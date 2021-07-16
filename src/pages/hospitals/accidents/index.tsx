@@ -5,11 +5,12 @@ import React, { useEffect, useState } from 'react';
 import { useMutation, useQuery } from 'urql';
 import { UpdateAccidentHospital } from '~/gql/hospital/mutations';
 import { GetAccidentList } from '~/gql/hospital/queries';
+import { useAuth } from '~/hooks/useAuth';
 
 const AccidentList = () => {
   const [page, setPage] = useState(1);
   const [accidents, setAccidents] = useState([]);
-
+  const { current_hospital_id } = useAuth();
   const [{ data }, refetech] = useQuery({
     query: GetAccidentList,
     requestPolicy: 'network-only',
@@ -19,7 +20,7 @@ const AccidentList = () => {
 
   useEffect(() => {
     if (data) {
-      setAccidents(get(data, 'users'));
+      setAccidents(get(data, 'accidents'));
     }
   }, [data]);
 
@@ -52,10 +53,16 @@ const AccidentList = () => {
           <>
             <Button
               onClick={async () => {
-                await updateStatus({ id: obj?.id, status: !record });
+                await updateStatus({
+                  id: obj?.id,
+                  status: !record,
+                  hospital_id: !record ? current_hospital_id : null,
+                });
                 refetech();
               }}
-              className={`${!record ? 'bg-green-600' : 'bg-red-600'}`}
+              className={`${
+                !record ? 'bg-green-600' : 'bg-red-600'
+              } text-white`}
             >{`${record ? 'Reject' : 'Accept'}`}</Button>
           </>
         );

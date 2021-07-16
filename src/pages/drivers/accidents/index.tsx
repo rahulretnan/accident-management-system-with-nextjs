@@ -24,8 +24,9 @@ const AccidentList = () => {
       setAccidents(get(data, 'accidents'));
     }
   }, [data]);
-
+  // useEffect(() => {
   //   setInterval(refetchAccident, 20000);
+  // }, []);
 
   const AccidentCard = ({ accident }) => {
     return (
@@ -50,7 +51,6 @@ const AccidentList = () => {
             Accept
           </Button>,
           <Button
-            disabled={isNull(get(accident, 'accepted_by'))}
             className="bg-red-700 rounded-md text-white"
             size="large"
             key="reject"
@@ -67,7 +67,19 @@ const AccidentList = () => {
           <Meta
             avatar={<Avatar src={get(accident, 'client.profile_picture')} />}
             title={get(accident, 'location')}
-            description={get(accident, 'description')}
+            description={
+              <>
+                <div>{`Description: ${get(accident, 'description')}`}</div>
+                <div>{`Hospital Name: ${get(
+                  accident,
+                  'hospital.user.name'
+                )}`}</div>
+                <div>{`Hospital Location: ${get(
+                  accident,
+                  'hospital.location'
+                )}`}</div>
+              </>
+            }
           />
         </Skeleton>
       </Card>

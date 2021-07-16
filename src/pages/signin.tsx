@@ -1,6 +1,5 @@
 import { Button, Card, Form, Input } from 'antd';
 import { useRouter } from 'next/router';
-import nookies from 'nookies';
 import React from 'react';
 import { useAuth } from '~/hooks/useAuth';
 
@@ -21,10 +20,6 @@ const SignIn = () => {
     }
   };
 
-  const guestMode = async () => {
-    nookies.set(undefined, 'isAnonymous', 'true', {});
-  };
-
   if (loading) return <div>Loading</div>;
   return (
     <Card title="ACCMA Login" className="w-96 rounded m-4 text-center">
@@ -39,7 +34,11 @@ const SignIn = () => {
           <Button htmlType="submit" className="w-full m-2" type="primary">
             Login
           </Button>
-          <Button htmlType="button" className="w-full m-2" type="primary">
+          <Button
+            onClick={() => router.push('/')}
+            className="w-full m-2"
+            type="primary"
+          >
             Guest
           </Button>
         </Item>

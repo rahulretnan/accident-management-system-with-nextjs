@@ -33,7 +33,6 @@ export const AuthProvider = ({ children }: TProps<TUser>) => {
       if (!user) {
         dispatch({ type: 'SET_USER', payload: initialValues });
         nookies.set(undefined, 'token', '', {});
-        nookies.set(undefined, 'isAnonymous', '', {});
         return;
       }
 
@@ -52,7 +51,6 @@ export const AuthProvider = ({ children }: TProps<TUser>) => {
         },
       });
       nookies.set(undefined, 'token', token, {});
-      nookies.set(undefined, 'isAnonymous', '', {});
     });
   }, []);
 
